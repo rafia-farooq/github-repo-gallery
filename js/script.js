@@ -2,6 +2,8 @@ const overview = document.querySelector(".overview");
 const repoList = document.querySelector(".repo-list");
 const repoData = document.querySelector(".repo-data");
 const backButton = document.querySelector(".view-repos");
+// this class is added through javascript in a function below called displayRepo
+const repo = document.querySelector(".repo");
 
 
 // Display personal data
@@ -98,6 +100,95 @@ const displayRepo = function(data) {
         repoList.append(list);
     }
 };
+
+
+
+ // click event 
+ repoList.addEventListener("click", function(e){
+
+    if (e.target.matches("h3")){
+        // console.log(e.target);
+
+        repoName = e.target.innerText;
+        // console.log(repoName);
+
+        singleRepo(repoName);
+    }
+    // else {
+    //     console.log("hey! not a button")
+    // }
+});
+
+
+// fetch single repo data
+const singleRepo = async function (repoName) {
+    const response = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
+    const data = await response.json();
+    console.log(data);
+
+    // fetch languages
+    // const languages = await fetch(`https://api.github.com/repos/${username}/${repoName}/languages`);
+    const languageObject = await fetch(data.languages_url);
+    const languageData = await languageObject.json();
+    // console.log(languageData);
+
+    // add languages to an array
+    const allLanguages = getLanguages(languageData);
+
+    // ghpages
+    let ghPages = "";
+    if(data.has_pages){
+         ghPages = "Yes"
+    }
+    else {
+         ghPages = "No"
+    }
+
+    // show single repo data
+    eachRepo(data, allLanguages, ghPages);
+};
+
+const getLanguages = function (languages) {
+    let listOfLanguages = [];
+
+    for(let l in languages) {  
+        listOfLanguages.push(l);
+    }
+
+    return listOfLanguages;
+};
+
+
+// show individual repo data on click
+const eachRepo = function (repo, allLanguages, ghPages) {
+    repoData.innerHTML = "";
+
+    // show/hide elements
+    repoData.classList.remove("hide");
+    repoList.classList.add("hide");
+    backButton.classList.remove("hide");
+
+    // display data
+    repoData.innerHTML = `
+    <div>
+        <h3>Name: ${repo.name}</h3>
+        <p><strong>Description:</strong> ${repo.description}</p>
+        <p><strong>Default Branch:</strong> ${repo.default_branch}</p>
+        <p><strong>Languages:</strong> ${allLanguages.join(", ")}</p>
+        <p><strong>Has hosted page:</strong> ${ghPages}</p>
+        <a class="visit" href="${repo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub</a>
+    </div>`
+    // or create a new div with all these elements and then append it to repoData
+
+};
+
+
+// back button to list of all repos
+backButton.addEventListener("click", function(){
+    repoData.classList.add("hide");
+    repoList.classList.remove("hide");
+    backButton.classList.add("hide");
+});
 
 
 
