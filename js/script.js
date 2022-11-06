@@ -92,39 +92,12 @@ const repos = async function () {
 
 // show repo names on website
 const displayRepo = function(data) {
-    repoList.classList.remove("hide");
-
     for (let repo of data) {
         const list = document.createElement("li");
-        list.classList.add("repo");
         list.innerHTML = `<h3 class="repo">${repo.name}</h3>`;
         repoList.append(list);
-
-        // click event 
-        repoList.addEventListener("click", function(repo){
-            eachRepo(repo);
-            console.log(repo);
-        })
-        // show individual repo data on click
-        const eachRepo = function (repo) {
-        
-        // show/hide elements
-        repoData.classList.remove("hide");
-        repoList.classList.add("hide");
-        backButton.classList.remove("hide");
-
-        // display data
-        repoData.innerHTML = `
-        <h3>Name: ${repo.name}</h3>
-        <p>Description: ${repo.description}</p>
-        <p>Default Branch: ${repo.default_branch}</p>
-        <p>Languages:${repo.languages}</p>
-        <p>Has hosted page: </p>
-        <button class="visit">
-            <a href="${repo.html_url}">View Repo on GitHub</a>
-        </button> `
-    
-}
     }
 };
+
+
 
