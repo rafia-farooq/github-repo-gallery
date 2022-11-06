@@ -4,6 +4,8 @@ const repoData = document.querySelector(".repo-data");
 const backButton = document.querySelector(".view-repos");
 // this class is added through javascript in a function below called displayRepo
 const repo = document.querySelector(".repo");
+// search bar 
+const filterInput = document.querySelector(".filter-repos");
 
 
 // Display personal data
@@ -27,6 +29,9 @@ const displayData = function (data) {
     const location = data.location;
     const numOfRepos = data.public_repos;
     const imageURL = data.avatar_url;
+
+    // show search bar
+    filterInput.classList.remove("hide");
 
     // create a div tag
     const userInfo = document.createElement("div");
@@ -92,7 +97,7 @@ const repos = async function () {
 
 
 
-// show repo names on website
+// show all repo names 
 const displayRepo = function(data) {
     for (let repo of data) {
         const list = document.createElement("li");
@@ -184,11 +189,32 @@ const eachRepo = function (repo, allLanguages, ghPages) {
 
 
 // back button to list of all repos
-backButton.addEventListener("click", function(){
+backButton.addEventListener("click", function () {
     repoData.classList.add("hide");
     repoList.classList.remove("hide");
     backButton.classList.add("hide");
 });
 
+
+// search bar functionality
+filterInput.addEventListener("input", function (e) {
+    const input = e.target.value;
+    // console.log(input);
+    const lowerCaseInput = input.toLowerCase();
+
+    const repos = document.querySelectorAll(".repo");
+
+    for(let single of repos){
+        const name = single.innerText.toLowerCase();
+     
+        if(name.includes(lowerCaseInput)) {
+            single.classList.remove("hide");
+        }
+        else {
+            single.classList.add("hide");
+        }
+    };
+   
+})
 
 
