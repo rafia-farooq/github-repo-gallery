@@ -3,7 +3,7 @@ const repoList = document.querySelector(".repo-list");
 const repoData = document.querySelector(".repo-data");
 const backButton = document.querySelector(".view-repos");
 // this class is added through javascript in a function below called displayRepo
-const repo = document.querySelector(".repo");
+const repoContainer = document.querySelector(".repos");
 // search bar 
 const filterInput = document.querySelector(".filter-repos");
 
@@ -29,9 +29,6 @@ const displayData = function (data) {
     const location = data.location;
     const numOfRepos = data.public_repos;
     const imageURL = data.avatar_url;
-
-    // show search bar
-    filterInput.classList.remove("hide");
 
     // create a div tag
     const userInfo = document.createElement("div");
@@ -99,6 +96,9 @@ const repos = async function () {
 
 // show all repo names 
 const displayRepo = function(data) {
+    // show search bar
+    filterInput.classList.remove("hide");
+
     for (let repo of data) {
         const list = document.createElement("li");
         list.innerHTML = `<h3 class="repo">${repo.name}</h3>`;
@@ -170,7 +170,7 @@ const eachRepo = function (repo, allLanguages, ghPages) {
 
     // show/hide elements
     repoData.classList.remove("hide");
-    repoList.classList.add("hide");
+    repoContainer.classList.add("hide");
     backButton.classList.remove("hide");
 
     // display data
@@ -191,7 +191,7 @@ const eachRepo = function (repo, allLanguages, ghPages) {
 // back button to list of all repos
 backButton.addEventListener("click", function () {
     repoData.classList.add("hide");
-    repoList.classList.remove("hide");
+    repoContainer.classList.remove("hide");
     backButton.classList.add("hide");
 });
 
