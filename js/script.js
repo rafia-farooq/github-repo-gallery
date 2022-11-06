@@ -1,8 +1,10 @@
 const overview = document.querySelector(".overview");
 const repoList = document.querySelector(".repo-list");
 const repoData = document.querySelector(".repo-data");
+const backButton = document.querySelector(".view-repos");
 
 
+// Display personal data
 const username = "rafia-farooq";
 
 
@@ -16,7 +18,7 @@ const personalData = async function () {
 
 personalData();
 
-const displayData = function ( data) {
+const displayData = function (data) {
     // fetch data
     const name = data.name;
     const bio = data.bio;
@@ -50,6 +52,10 @@ const displayData = function ( data) {
     <p> <strong>Bio: </strong> ${bio}</p>
     <p> <strong>Location: </strong> ${location}</p>
     <p> <strong>Number of Public Repos: </strong> ${numOfRepos}</p>`;
+
+    // fetch repo data
+    repos();
+    
 };
 
 // or a shorter way:
@@ -70,3 +76,55 @@ const displayData = function ( data) {
 //     `;
 //     overview.append(div);
 //   };
+
+
+// Display repos
+
+// fetch repo data
+const repos = async function () {
+    const response = await fetch (`https://api.github.com/users/${username}/repos?sort=updated&&per_page=100`);
+    const data = await response.json();
+    console.log(data);
+    displayRepo(data);
+};
+
+
+
+// show repo names on website
+const displayRepo = function(data) {
+    repoList.classList.remove("hide");
+
+    for (let repo of data) {
+        const list = document.createElement("li");
+        list.classList.add("repo");
+        list.innerHTML = `<h3 class="repo">${repo.name}</h3>`;
+        repoList.append(list);
+
+        // click event 
+        repoList.addEventListener("click", function(repo){
+            eachRepo(repo);
+            console.log(repo);
+        })
+        // show individual repo data on click
+        const eachRepo = function (repo) {
+        
+        // show/hide elements
+        repoData.classList.remove("hide");
+        repoList.classList.add("hide");
+        backButton.classList.remove("hide");
+
+        // display data
+        repoData.innerHTML = `
+        <h3>Name: ${repo.name}</h3>
+        <p>Description: ${repo.description}</p>
+        <p>Default Branch: ${repo.default_branch}</p>
+        <p>Languages:${repo.languages}</p>
+        <p>Has hosted page: </p>
+        <button class="visit">
+            <a href="${repo.html_url}">View Repo on GitHub</a>
+        </button> `
+    
+}
+    }
+};
+
