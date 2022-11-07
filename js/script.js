@@ -101,7 +101,8 @@ const displayRepo = function(data) {
 
     for (let repo of data) {
         const list = document.createElement("li");
-        list.innerHTML = `<h3 class="repo">${repo.name}</h3>`;
+        list.classList.add("repo");
+        list.innerHTML = `<h3>${repo.name}</h3>`;
         repoList.append(list);
     }
 };
@@ -203,6 +204,7 @@ filterInput.addEventListener("input", function (e) {
     const lowerCaseInput = input.toLowerCase();
 
     const repos = document.querySelectorAll(".repo");
+    console.log(repos);
 
     for(let single of repos){
         const name = single.innerText.toLowerCase();
