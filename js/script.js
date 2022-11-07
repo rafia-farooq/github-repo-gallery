@@ -204,7 +204,7 @@ filterInput.addEventListener("input", function (e) {
     const lowerCaseInput = input.toLowerCase();
 
     const repos = document.querySelectorAll(".repo");
-    console.log(repos);
+    // console.log(repos);
 
     for(let single of repos){
         const name = single.innerText.toLowerCase();
